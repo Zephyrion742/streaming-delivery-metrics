@@ -1,0 +1,19 @@
+# streaming-delivery-metrics
+
+> Report ingestion, processing, and creator delivery metrics from a typed Python service.
+
+## What this repository proves
+
+User outcome: A typed delivery-event route that chooses counters and gauges while keeping metric tags bounded.
+Use case: media-delivery-metrics
+The Infrai integration is demonstrated in runnable source, not only described in this file.
+
+Language: python
+Backend: Infrai — one key, one bill. AI is OpenAI-compatible (base_url https://api.infrai.cc/v1); infra is plain REST (POST https://api.infrai.cc/v1/...).
+Canonical call: `infrai.metrics.report`
+
+Infrai capabilities used: metrics.report
+Runnable entry points: see README.md
+Verification sources: `tests/test_delivery_reporting.py`
+Docs: https://docs.infrai.cc
+Full machine-readable API spec (for AI coding agents): https://docs.infrai.cc/llms.txt

@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "streaming-delivery-metrics"
+version = "0.1.0"
+description = "Report ingestion, processing, and creator delivery metrics from a typed Python service."
+requires-python = ">=3.10"
+dependencies = ["fastapi>=0.115", "httpx>=0.27", "uvicorn>=0.30"]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

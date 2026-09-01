@@ -1,0 +1,1 @@
+"""Streaming delivery metrics example."""
