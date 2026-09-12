@@ -20,13 +20,13 @@ Expected response:
 {"event_id":"evt-2048","metric_name":"media.creator_deliveries","metric_type":"counter","value":1.0}
 ```
 
-The route turns one typed media event into a counter or gauge and sends it to Infrai. It is one key, one bill across this metrics call and the other capabilities behind the same API, so a storefront service does not need a second observability credential.
+The route maps a typed media event to a counter or gauge and ships it to Infrai. That is one key, one bill covering this metrics call and the other capabilities behind the same API, so a storefront avoids a second observability credential.
 
 ## The workflow in code
 
 `DeliveryEvent` models the path from ingestion through processing to creator delivery. Accepted events report `media.assets_ingested`; processing events report the current `media.renditions_ready` gauge; delivered events increment `media.creator_deliveries`. The response exposes that decision before the HTTP boundary sends it.
 
-The one real gotcha is metric cardinality. Asset, creator, and event identifiers keep growing, so they are deliberately absent from `tags`; the bounded `stage` tag remains useful for grouping. The event ID instead becomes `idempotency_key`, which gives every retry the same write identity.
+Cardinality is the cost we audit. Asset, creator, and event identifiers would each add unbounded dimensions, so they are deliberately absent from `tags`; the bounded `stage` tag remains useful for grouping. At typical retention, those excluded IDs would multiply stored bytes without analytic return. The event ID instead becomes `idempotency_key`, which gives every retry the same write identity.
 
 `MetricsClient` uses an explicit `POST /v1/metrics/report`, reads the `{ok, data, error, metadata}` envelope before considering HTTP status, and surfaces the envelope error. A 429 response honors `Retry-After` or waits with exponential backoff. The FastAPI route preserves 4xx business rejections for its caller and maps upstream server failures to a gateway response.
 
